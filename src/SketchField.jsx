@@ -453,6 +453,8 @@ class SketchField extends PureComponent {
 
         this._initTools(canvas);
 
+        this._backgroundColor(this.props.backgroundColor);
+
         let selectedTool = this._tools[tool];
         selectedTool.configureCanvas(this.props);
         this._selectedTool = selectedTool;
@@ -493,23 +495,21 @@ class SketchField extends PureComponent {
 
             this._resize()
         }
-    };
 
-    componentWillReceiveProps = (nextProps) => {
-        if (this.props.tool !== nextProps.tool) {
-            this._selectedTool = this._tools[nextProps.tool] || this._tools[Tool.Pencil]
+        if (prevProps.tool !== this.props.tool) {
+            this._selectedTool = this._tools[this.props.tool] || this._tools[Tool.Pencil]
         }
 
         //Bring the cursor back to default if it is changed by a tool
         this._fc.defaultCursor = 'default';
-        this._selectedTool.configureCanvas(nextProps);
+        this._selectedTool.configureCanvas(this.props);
 
-        if (this.props.backgroundColor !== nextProps.backgroundColor) {
-            this._backgroundColor(nextProps.backgroundColor)
+        if (prevProps.backgroundColor !== this.props.backgroundColor) {
+            this._backgroundColor(this.props.backgroundColor)
         }
 
-        if ((this.props.value !== nextProps.value) || (nextProps.value && nextProps.forceValue)) {
-            this.fromJSON(nextProps.value);
+        if ((prevProps.value !== this.props.value) || (this.props.value && this.props.forceValue)) {
+            this.fromJSON(this.props.value);
         }
     };
 

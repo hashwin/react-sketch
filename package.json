@@ -90,7 +90,7 @@
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1",
     "weinre": "^2.0.0-pre-I0Z7U9OV",
-    "phantomjs-prebuilt": "^2.1.8"
+    "phantomjs-prebuilt": "^2.1.16"
   },
   "dependencies": {
     "prop-types": "^15.6.0",
