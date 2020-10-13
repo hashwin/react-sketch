@@ -62,7 +62,7 @@ class SketchField extends PureComponent {
     };
 
     state = {
-        parentWidth: 550,
+        // parentWidth: 550,
         action: true
     };
     _initTools = (fabricCanvas) => {
@@ -238,9 +238,9 @@ class SketchField extends PureComponent {
             obj.top = tempTop;
             obj.setCoords()
         }
-        this.setState({
-            parentWidth: offsetWidth
-        });
+        // this.setState({
+        //     parentWidth: offsetWidth
+        // });
         canvas.renderAll();
         canvas.calcOffset();
     };
@@ -412,28 +412,33 @@ class SketchField extends PureComponent {
      */
     setBackgroundFromDataUrl = (dataUrl, options = {}) => {
         let canvas = this._fc;
-        if (options.stretched) {
-            delete options.stretched;
-            Object.assign(options, {
-                width: canvas.width,
-                height: canvas.height
-            })
-        }
-        if (options.stretchedX) {
-            delete options.stretchedX;
-            Object.assign(options, {
-                width: canvas.width
-            })
-        }
-        if (options.stretchedY) {
-            delete options.stretchedY;
-            Object.assign(options, {
-                height: canvas.height
-            })
-        }
+        // if (options.stretched) {
+        //     delete options.stretched;
+        //     Object.assign(options, {
+        //         width: canvas.width,
+        //         height: canvas.height
+        //     })
+        // }
+        // if (options.stretchedX) {
+        //     delete options.stretchedX;
+        //     Object.assign(options, {
+        //         width: canvas.width
+        //     })
+        // }
+        // if (options.stretchedY) {
+        //     delete options.stretchedY;
+        //     Object.assign(options, {
+        //         height: canvas.height
+        //     })
+        // }
         let img = new Image();
-        img.onload = () => canvas.setBackgroundImage(new fabric.Image(img),
-            () => canvas.renderAll(), options);
+        const { stretched, stretchedX, stretchedY, ...fabricOptions } = options
+            img.onload = () => {
+            const imgObj = new fabric.Image(img);
+            if (stretched || stretchedX) imgObj.scaleToWidth(canvas.width)
+            if (stretched || stretchedY) imgObj.scaleToHeight(canvas.height)
+            canvas.setBackgroundImage(imgObj, () => canvas.renderAll(), fabricOptions)
+        };
         img.src = dataUrl
     };
 
@@ -489,8 +494,8 @@ class SketchField extends PureComponent {
     componentWillUnmount = () => window.removeEventListener('resize', this._resize);
 
     componentDidUpdate = (prevProps, prevState) => {
-        if (this.state.parentWidth !== prevState.parentWidth
-            || this.props.width !== prevProps.width
+        // if (this.state.parentWidth !== prevState.parentWidth
+            if(this.props.width !== prevProps.width
             || this.props.height !== prevProps.height) {
 
             this._resize()
